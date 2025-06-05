@@ -10,19 +10,34 @@ const LoginScreen = () => {
   const [mode, setMode] = useState<'login' | 'signup' | 'reset'>('login');
   const [resetEmail, setResetEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const { login, signup, resetPassword } = useAuth();
   const colorScheme = useColorScheme();
 
   const handleLogin = async () => {
+    setErrorMsg(null);
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password');
+      setErrorMsg('Please enter both email and password');
       return;
     }
     setLoading(true);
-    const success = await login(email, password);
-    setLoading(false);
-    if (!success) {
-      Alert.alert('Error', 'Invalid credentials or user does not exist');
+    try {
+      const success = await login(email, password);
+      setLoading(false);
+      if (!success) {
+        setErrorMsg('Invalid credentials or user does not exist');
+      }
+    } catch (error: any) {
+      setLoading(false);
+      let message = 'Login failed. Please try again.';
+      if (error.code === 'auth/user-not-found') {
+        message = 'No account found with this email.';
+      } else if (error.code === 'auth/wrong-password') {
+        message = 'Incorrect password.';
+      } else if (error.code === 'auth/invalid-email') {
+        message = 'Invalid email address.';
+      }
+      setErrorMsg(message);
     }
   };
 
@@ -60,7 +75,7 @@ const LoginScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}> 
-      <Text style={[styles.title, { color: Colors[colorScheme ?? 'light'].text }]}>Financial Control App</Text>
+      <Text style={[styles.title, { color: '#FF7001', fontSize: 32 }]}>FinCon</Text>
       {mode === 'login' && (
         <>
           <TextInput
@@ -88,6 +103,9 @@ const LoginScreen = () => {
             onChangeText={setPassword}
             secureTextEntry
           />
+          {errorMsg && (
+            <Text style={{ color: 'red', textAlign: 'center', marginBottom: 8 }}>{errorMsg}</Text>
+          )}
           <Button title={loading ? 'Logging in...' : 'Login'} onPress={handleLogin} color="#FF7001" disabled={loading} />
           <Text style={{ textAlign: 'center', marginTop: 10 }}>
             <Text style={{ color: '#FF7001' }} onPress={() => setMode('signup')}>Sign up</Text> | <Text style={{ color: '#FF7001' }} onPress={() => setMode('reset')}>Forgot password?</Text>
