@@ -1,14 +1,28 @@
-import React from 'react';
-import { View, Text, StyleSheet, Alert, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Alert, Button, Modal, TouchableOpacity } from 'react-native';
 import { useAuth } from './auth/AuthContext';
 import { auth, db } from '../firebaseConfig';
 import { deleteUser } from 'firebase/auth';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useRouter } from 'expo-router';
 
 const ProfileScreen = () => {
   const { user } = useAuth();
-  const email = user?.email || '';
-  const name = email.split('@')[0];
+  // Defensive: handle user object from Firebase Auth
+  let email = '';
+  let name = '';
+  if (user) {
+    if (typeof user.email === 'string') {
+      email = user.email;
+      name = user.displayName || email.split('@')[0];
+    } else if (user.user && typeof user.user.email === 'string') {
+      email = user.user.email;
+      name = user.user.displayName || email.split('@')[0];
+    }
+  }
+  const [menuVisible, setMenuVisible] = useState(false);
+  const router = useRouter();
 
   const handleDeleteAccount = async () => {
     Alert.alert(
@@ -45,6 +59,28 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => setMenuVisible(true)} style={{ position: 'absolute', top: 40, right: 20, zIndex: 1 }}>
+        <FontAwesome name="bars" size={28} color="#FF7001" />
+      </TouchableOpacity>
+      <Modal
+        visible={menuVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <TouchableOpacity style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.2)' }} activeOpacity={1} onPress={() => setMenuVisible(false)}>
+          <View style={{ position: 'absolute', top: 60, right: 20, backgroundColor: '#fff', borderRadius: 8, padding: 16, elevation: 4, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8 }}>
+            <TouchableOpacity onPress={() => { setMenuVisible(false); router.replace('/'); }} style={{ paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }}>
+              <FontAwesome name="home" size={18} color="#FF7001" style={{ marginRight: 8 }} />
+              <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Main Page</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setMenuVisible(false); router.replace('/profile'); }} style={{ paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }}>
+              <FontAwesome name="user" size={18} color="#FF7001" style={{ marginRight: 8 }} />
+              <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
       <Text style={styles.title}>Profile</Text>
       <Text style={styles.label}>Name:</Text>
       <Text style={styles.value}>{name}</Text>

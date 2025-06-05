@@ -1,11 +1,13 @@
-import { Stack } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { AuthProvider } from './auth/AuthContext';
+import { useColorScheme } from '@/components/useColorScheme';
+import { AuthProvider, useAuth } from './auth/AuthContext';
+import LoginScreen from './login';
+import FinanceScreen from './(tabs)/finance';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,11 +33,17 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="profile" options={{ title: '', headerShown: false }} />
-        <Stack.Screen name="login" options={{ headerShown: false }} />
-      </Stack>
+      <RootLayoutNav />
     </AuthProvider>
   );
+}
+
+function RootLayoutNav() {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <LoginScreen />;
+  }
+
+  return <FinanceScreen />;
 }

@@ -8,6 +8,7 @@ import { db } from '../../firebaseConfig';
 import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from '../auth/AuthContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useRouter } from 'expo-router';
 
 interface Transaction {
   id: string;
@@ -28,6 +29,7 @@ const FinanceScreen: React.FC = () => {
   const [editAmount, setEditAmount] = useState('');
   const [menuVisible, setMenuVisible] = useState(false);
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   useEffect(() => {
     calculateTotals();
@@ -180,7 +182,11 @@ const FinanceScreen: React.FC = () => {
         >
           <TouchableOpacity style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.2)' }} activeOpacity={1} onPress={() => setMenuVisible(false)}>
             <View style={{ position: 'absolute', top: 60, right: 20, backgroundColor: '#fff', borderRadius: 8, padding: 16, elevation: 4, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8 }}>
-              <TouchableOpacity onPress={() => { setMenuVisible(false); /* TODO: Add profile navigation here */ }} style={{ paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => { setMenuVisible(false); router.replace('/'); }} style={{ paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome name="home" size={18} color="#FF7001" style={{ marginRight: 8 }} />
+                <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Main Page</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { setMenuVisible(false); router.replace('/profile'); }} style={{ paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }}>
                 <FontAwesome name="user" size={18} color="#FF7001" style={{ marginRight: 8 }} />
                 <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
               </TouchableOpacity>
