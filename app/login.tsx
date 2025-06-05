@@ -7,7 +7,10 @@ import Colors from '@/constants/Colors';
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const [mode, setMode] = useState<'login' | 'signup' | 'reset'>('login');
+  const [resetEmail, setResetEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { login, signup, resetPassword } = useAuth();
   const colorScheme = useColorScheme();
 
   const handleLogin = async () => {
@@ -15,44 +18,136 @@ const LoginScreen = () => {
       Alert.alert('Error', 'Please enter both email and password');
       return;
     }
-
+    setLoading(true);
     const success = await login(email, password);
-    if (success) {
-      Alert.alert('Success', 'Login successful!');
+    setLoading(false);
+    if (!success) {
+      Alert.alert('Error', 'Invalid credentials or user does not exist');
+    }
+  };
+
+  const handleSignup = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+    setLoading(true);
+    const result = await signup(email, password);
+    setLoading(false);
+    if (result.success) {
+      Alert.alert('Success', 'Account created! You are now logged in.');
+      setMode('login');
     } else {
-      Alert.alert('Error', 'Invalid credentials');
+      Alert.alert('Error', result.error || 'Sign up failed');
+    }
+  };
+
+  const handleReset = async () => {
+    if (!resetEmail) {
+      Alert.alert('Error', 'Please enter your email');
+      return;
+    }
+    setLoading(true);
+    const result = await resetPassword(resetEmail);
+    setLoading(false);
+    if (result.success) {
+      Alert.alert('Success', 'Password reset email sent!');
+      setMode('login');
+    } else {
+      Alert.alert('Error', result.error || 'Failed to send reset email');
     }
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}>
+    <View style={[styles.container, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}> 
       <Text style={[styles.title, { color: Colors[colorScheme ?? 'light'].text }]}>Financial Control App</Text>
-      <TextInput
-        style={[styles.input, { 
-          backgroundColor: Colors[colorScheme ?? 'light'].background, 
-          color: Colors[colorScheme ?? 'light'].text,
-          borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
-        }]}
-        placeholder="Email"
-        placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={[styles.input, { 
-          backgroundColor: Colors[colorScheme ?? 'light'].background, 
-          color: Colors[colorScheme ?? 'light'].text,
-          borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
-        }]}
-        placeholder="Password"
-        placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Button title="Login" onPress={handleLogin} color="#FF7001" />
+      {mode === 'login' && (
+        <>
+          <TextInput
+            style={[styles.input, { 
+              backgroundColor: Colors[colorScheme ?? 'light'].background, 
+              color: Colors[colorScheme ?? 'light'].text,
+              borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
+            }]}
+            placeholder="Email"
+            placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <TextInput
+            style={[styles.input, { 
+              backgroundColor: Colors[colorScheme ?? 'light'].background, 
+              color: Colors[colorScheme ?? 'light'].text,
+              borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
+            }]}
+            placeholder="Password"
+            placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+          <Button title={loading ? 'Logging in...' : 'Login'} onPress={handleLogin} color="#FF7001" disabled={loading} />
+          <Text style={{ textAlign: 'center', marginTop: 10 }}>
+            <Text style={{ color: '#FF7001' }} onPress={() => setMode('signup')}>Sign up</Text> | <Text style={{ color: '#FF7001' }} onPress={() => setMode('reset')}>Forgot password?</Text>
+          </Text>
+        </>
+      )}
+      {mode === 'signup' && (
+        <>
+          <TextInput
+            style={[styles.input, { 
+              backgroundColor: Colors[colorScheme ?? 'light'].background, 
+              color: Colors[colorScheme ?? 'light'].text,
+              borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
+            }]}
+            placeholder="Email"
+            placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <TextInput
+            style={[styles.input, { 
+              backgroundColor: Colors[colorScheme ?? 'light'].background, 
+              color: Colors[colorScheme ?? 'light'].text,
+              borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
+            }]}
+            placeholder="Password"
+            placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+          <Button title={loading ? 'Signing up...' : 'Sign up'} onPress={handleSignup} color="#FF7001" disabled={loading} />
+          <Text style={{ textAlign: 'center', marginTop: 10 }}>
+            <Text style={{ color: '#FF7001' }} onPress={() => setMode('login')}>Back to login</Text>
+          </Text>
+        </>
+      )}
+      {mode === 'reset' && (
+        <>
+          <TextInput
+            style={[styles.input, { 
+              backgroundColor: Colors[colorScheme ?? 'light'].background, 
+              color: Colors[colorScheme ?? 'light'].text,
+              borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
+            }]}
+            placeholder="Enter your email"
+            placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
+            value={resetEmail}
+            onChangeText={setResetEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <Button title={loading ? 'Sending...' : 'Send reset email'} onPress={handleReset} color="#FF7001" disabled={loading} />
+          <Text style={{ textAlign: 'center', marginTop: 10 }}>
+            <Text style={{ color: '#FF7001' }} onPress={() => setMode('login')}>Back to login</Text>
+          </Text>
+        </>
+      )}
     </View>
   );
 };
