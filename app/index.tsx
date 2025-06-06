@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
-import { AuthProvider, useAuth } from './auth/AuthContext';
+import { AuthProvider, useAuth } from '@/components/auth/AuthContext';
 import LoginScreen from './login';
 import FinanceScreen from './(tabs)/finance';
 

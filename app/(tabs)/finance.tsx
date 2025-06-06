@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
 import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
-import ExpenseInput from '../components/ExpenseInput';
-import IncomeInput from '../components/IncomeInput';
+import ExpenseInput from '@/components/app-specific/ExpenseInput';
+import IncomeInput from '@/components/app-specific/IncomeInput';
 import { db } from '../../firebaseConfig';
 import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '@/components/auth/AuthContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 

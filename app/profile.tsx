@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, Button, Modal, TouchableOpacity } from 'react-native';
-import { useAuth } from './auth/AuthContext';
+import { useAuth } from '@/components/auth/AuthContext';
 import { auth, db } from '../firebaseConfig';
 import { deleteUser } from 'firebase/auth';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
