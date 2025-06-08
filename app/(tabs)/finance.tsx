@@ -168,12 +168,9 @@ const FinanceScreen: React.FC = () => {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={true} horizontal={false}>
       <View style={[styles.container, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}> 
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 24, position: 'relative' }}>
-          <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#FF7001', textAlign: 'center' }}>FinCon</Text>
-          <TouchableOpacity onPress={() => setMenuVisible(true)} style={{ position: 'absolute', right: 0, paddingHorizontal: 16, zIndex: 1 }}>
-            <FontAwesome name="bars" size={28} color="#FF7001" />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => setMenuVisible(true)} style={{ alignSelf: 'flex-end', margin: 16 }}>
+          <FontAwesome name="bars" size={28} color="#FF7001" />
+        </TouchableOpacity>
         <Modal
           visible={menuVisible}
           transparent

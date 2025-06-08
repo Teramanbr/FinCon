@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword, signOut, User, createUserWithEmailAndPasswo
 
 interface AuthContextType {
   user: any;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<boolean | { success: boolean; error?: string }>;
   logout: () => void;
   signup: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   resetPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
@@ -28,9 +28,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       setUser(userCredential.user);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       setUser(null);
-      return false;
+      return { 
+        success: false, 
+        error: error.code || 'auth/login-failed' 
+      };
     }
   };
 

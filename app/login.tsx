@@ -3,6 +3,7 @@ import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { useAuth } from '@/components/auth/AuthContext';
 import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
+import { useRouter } from 'expo-router';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ const LoginScreen = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const { login, signup, resetPassword } = useAuth();
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   const handleLogin = async () => {
     setErrorMsg(null);
@@ -21,23 +23,24 @@ const LoginScreen = () => {
       return;
     }
     setLoading(true);
-    try {
-      const success = await login(email, password);
-      setLoading(false);
-      if (!success) {
-        setErrorMsg('Invalid credentials or user does not exist');
-      }
-    } catch (error: any) {
-      setLoading(false);
+    const result = await login(email, password);
+    setLoading(false);
+    
+    if (result === true) {
+      // Navigate to home after successful login
+      router.replace('/');
+    } else if (typeof result === 'object' && result.success === false) {
       let message = 'Login failed. Please try again.';
-      if (error.code === 'auth/user-not-found') {
+      if (result.error === 'auth/user-not-found') {
         message = 'No account found with this email.';
-      } else if (error.code === 'auth/wrong-password') {
+      } else if (result.error === 'auth/wrong-password') {
         message = 'Incorrect password.';
-      } else if (error.code === 'auth/invalid-email') {
+      } else if (result.error === 'auth/invalid-email') {
         message = 'Invalid email address.';
       }
       setErrorMsg(message);
+    } else {
+      setErrorMsg('Login failed. Please try again.');
     }
   };
 

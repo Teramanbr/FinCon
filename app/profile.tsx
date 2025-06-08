@@ -27,23 +27,38 @@ const ProfileScreen = () => {
 
   const handleDeleteAccount = async () => {
     try {
+      if (!auth.currentUser) {
+        throw new Error('No authenticated user');
+      }
+
       // Delete all user transactions
-      const userId = auth.currentUser?.uid;
-      if (userId) {
-        const txCol = collection(db, 'users', userId, 'transactions');
-        const txs = await getDocs(txCol);
-        for (const tx of txs.docs) {
-          await deleteDoc(tx.ref);
-        }
-        // Delete user document (if you have one)
-        await deleteDoc(doc(db, 'users', userId));
+      const userId = auth.currentUser.uid;
+      const txCol = collection(db, 'users', userId, 'transactions');
+      const txs = await getDocs(txCol);
+      for (const tx of txs.docs) {
+        await deleteDoc(tx.ref);
       }
-      // Delete user auth account
+      
+      // Delete user document
+      await deleteDoc(doc(db, 'users', userId));
+
+      // Delete auth user account
+      await deleteUser(auth.currentUser);
+      
+      // Verify deletion was successful
       if (auth.currentUser) {
-        await deleteUser(auth.currentUser);
+        throw new Error('User account still exists after deletion attempt');
       }
-    } catch (e) {
-      Alert.alert('Error', 'Failed to delete account. Please re-login and try again.');
+
+      // Only redirect if deletion was successful
+      router.replace('/login');
+    } catch (error: unknown) {
+      console.error('Account deletion failed:', error);
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Could not delete account. Please re-login and try again.';
+      Alert.alert('Deletion Failed', errorMessage);
+      setDeleteConfirmVisible(false);
     }
   };
 
