@@ -22,7 +22,7 @@ const IncomeInput: React.FC<IncomeInputProps> = ({ onAddIncome }) => {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: Colors[colorScheme ?? 'light'].text }]}>
-        Add Income
+        Adicionar Receita
       </Text>
       <TextInput
         style={[styles.input, { 
@@ -30,7 +30,7 @@ const IncomeInput: React.FC<IncomeInputProps> = ({ onAddIncome }) => {
           color: Colors[colorScheme ?? 'light'].text,
           borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
         }]}
-        placeholder="Description"
+        placeholder="Descrição"
         placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
         value={description}
         onChangeText={setDescription}
@@ -41,13 +41,13 @@ const IncomeInput: React.FC<IncomeInputProps> = ({ onAddIncome }) => {
           color: Colors[colorScheme ?? 'light'].text,
           borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
         }]}
-        placeholder="Amount"
+        placeholder="Valor"
         placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
         value={amount}
         onChangeText={setAmount}
         keyboardType="numeric"
       />
-      <Button title="Add Income" onPress={handleAddIncome} color="#FF7001" />
+      <Button title="Adicionar Receita" onPress={handleAddIncome} color="#FF7001" />
     </View>
   );
 };

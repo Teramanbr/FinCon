@@ -181,27 +181,27 @@ const FinanceScreen: React.FC = () => {
             <View style={{ position: 'absolute', top: 60, right: 20, backgroundColor: '#fff', borderRadius: 8, padding: 16, elevation: 4, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8 }}>
               <TouchableOpacity onPress={() => { setMenuVisible(false); router.replace('/'); }} style={{ paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }}>
                 <FontAwesome name="home" size={18} color="#FF7001" style={{ marginRight: 8 }} />
-                <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Main Page</Text>
+                <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Página Principal</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => { setMenuVisible(false); router.replace('/profile'); }} style={{ paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }}>
                 <FontAwesome name="user" size={18} color="#FF7001" style={{ marginRight: 8 }} />
-                <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
+                <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Perfil</Text>
               </TouchableOpacity>
               <View style={{ height: 1, backgroundColor: '#eee', marginVertical: 4 }} />
               <TouchableOpacity onPress={() => { setMenuVisible(false); logout(); }} style={{ paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }}>
                 <FontAwesome name="sign-out" size={18} color="#FF7001" style={{ marginRight: 8 }} />
-                <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Log out</Text>
+                <Text style={{ color: '#FF7001', fontWeight: 'bold', fontSize: 16 }}>Sair</Text>
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
         </Modal>
         <View style={[styles.summaryContainer, { backgroundColor: '#FFF3E6' }]}> 
           <Text style={[styles.summaryTitle, { color: Colors[colorScheme ?? 'light'].text }]}> 
-            Financial Summary 
+            Resumo Financeiro
           </Text> 
           <View style={styles.summaryRow}> 
             <Text style={[styles.summaryLabel, { color: Colors[colorScheme ?? 'light'].text }]}> 
-              Balance: 
+              Saldo: 
             </Text> 
             <Text style={[styles.summaryValue, { color: '#FF7001' }]}> 
               ${balance.toFixed(2)} 
@@ -209,7 +209,7 @@ const FinanceScreen: React.FC = () => {
           </View> 
           <View style={styles.summaryRow}> 
             <Text style={[styles.summaryLabel, { color: Colors[colorScheme ?? 'light'].text }]}> 
-              Income: 
+              Receitas: 
             </Text> 
             <Text style={[styles.summaryValue, { color: '#FF7001' }]}> 
               ${totalIncome.toFixed(2)} 
@@ -217,7 +217,7 @@ const FinanceScreen: React.FC = () => {
           </View> 
           <View style={styles.summaryRow}> 
             <Text style={[styles.summaryLabel, { color: Colors[colorScheme ?? 'light'].text }]}> 
-              Expenses: 
+              Despesas: 
             </Text> 
             <Text style={[styles.summaryValue, { color: '#FF7001' }]}> 
               ${totalExpenses.toFixed(2)} 
@@ -227,7 +227,7 @@ const FinanceScreen: React.FC = () => {
         <IncomeInput onAddIncome={handleAddIncome} /> 
         <ExpenseInput onAddExpense={handleAddExpense} /> 
         <Text style={[styles.transactionsTitle, { color: Colors[colorScheme ?? 'light'].text }]}> 
-          Recent Transactions 
+          Transações Recentes
         </Text> 
         <FlatList 
           data={transactions} 

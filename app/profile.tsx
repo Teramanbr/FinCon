@@ -80,15 +80,15 @@ const ProfileScreen = () => {
           <View style={styles.menuContent}>
             <TouchableOpacity onPress={() => { setMenuVisible(false); router.replace('/'); }} style={styles.menuItem}>
               <FontAwesome name="home" size={18} color="#FF7001" style={styles.menuIcon} />
-              <Text style={styles.menuText}>Main Page</Text>
+              <Text style={styles.menuText}>Página Principal</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { setMenuVisible(false); router.replace('/profile'); }} style={styles.menuItem}>
               <FontAwesome name="user" size={18} color="#FF7001" style={styles.menuIcon} />
-              <Text style={styles.menuText}>Profile</Text>
+              <Text style={styles.menuText}>Perfil</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { setMenuVisible(false); logout(); }} style={styles.menuItem}>
               <FontAwesome name="sign-out" size={18} color="#FF7001" style={styles.menuIcon} />
-              <Text style={styles.menuText}>Sign Out</Text>
+              <Text style={styles.menuText}>Sair</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -105,13 +105,13 @@ const ProfileScreen = () => {
         </View>
 
         {/* Profile Info */}
-        <Text style={styles.title}>Profile</Text>
+        <Text style={styles.title}>Perfil</Text>
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.label}>Nome:</Text>
           <Text style={styles.value}>{name}</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.label}>E-mail:</Text>
           <Text style={styles.value}>{email}</Text>
         </View>
 
@@ -120,7 +120,7 @@ const ProfileScreen = () => {
           style={styles.deleteButton}
           onPress={() => setDeleteConfirmVisible(true)}
         >
-          <Text style={styles.deleteButtonText}>Delete Account</Text>
+          <Text style={styles.deleteButtonText}>Excluir Conta</Text>
         </TouchableOpacity>
 
         {/* Delete Confirmation Modal */}
@@ -132,22 +132,22 @@ const ProfileScreen = () => {
         >
           <View style={styles.modalBackdrop}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Delete Account</Text>
+              <Text style={styles.modalTitle}>Excluir Conta</Text>
               <Text style={styles.modalText}>
-                Are you sure you want to delete your account? This will permanently remove your data and cannot be undone.
+                Tem certeza que deseja excluir sua conta? Esta ação removerá permanentemente seus dados e não pode ser desfeita.
               </Text>
               <View style={styles.modalButtons}>
                 <TouchableOpacity 
                   style={[styles.modalButton, styles.cancelButton]}
                   onPress={() => setDeleteConfirmVisible(false)}
                 >
-                  <Text style={styles.buttonText}>Cancel</Text>
+                  <Text style={styles.buttonText}>Cancelar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={[styles.modalButton, styles.deleteButtonModal]}
                   onPress={handleDeleteAccount}
                 >
-                  <Text style={styles.buttonText}>Delete</Text>
+                  <Text style={styles.buttonText}>Excluir</Text>
                 </TouchableOpacity>
               </View>
             </View>

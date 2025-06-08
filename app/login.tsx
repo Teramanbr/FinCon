@@ -19,7 +19,7 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     setErrorMsg(null);
     if (!email || !password) {
-      setErrorMsg('Please enter both email and password');
+      setErrorMsg('Por favor insira email e senha');
       return;
     }
     setLoading(true);
@@ -30,49 +30,49 @@ const LoginScreen = () => {
       // Navigate to home after successful login
       router.replace('/');
     } else if (typeof result === 'object' && result.success === false) {
-      let message = 'Login failed. Please try again.';
+      let message = 'Falha no login. Por favor tente novamente.';
       if (result.error === 'auth/user-not-found') {
-        message = 'No account found with this email.';
+        message = 'Nenhuma conta encontrada com este email.';
       } else if (result.error === 'auth/wrong-password') {
-        message = 'Incorrect password.';
+        message = 'Senha incorreta.';
       } else if (result.error === 'auth/invalid-email') {
-        message = 'Invalid email address.';
+        message = 'Endereço de email inválido.';
       }
       setErrorMsg(message);
     } else {
-      setErrorMsg('Login failed. Please try again.');
+      setErrorMsg('Falha no login. Por favor tente novamente.');
     }
   };
 
   const handleSignup = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password');
+      Alert.alert('Erro', 'Por favor insira email e senha');
       return;
     }
     setLoading(true);
     const result = await signup(email, password);
     setLoading(false);
     if (result.success) {
-      Alert.alert('Success', 'Account created! You are now logged in.');
+      Alert.alert('Sucesso', 'Conta criada! Você está logado agora.');
       setMode('login');
     } else {
-      Alert.alert('Error', result.error || 'Sign up failed');
+      Alert.alert('Erro', result.error || 'Falha no cadastro');
     }
   };
 
   const handleReset = async () => {
     if (!resetEmail) {
-      Alert.alert('Error', 'Please enter your email');
+      Alert.alert('Erro', 'Por favor insira seu email');
       return;
     }
     setLoading(true);
     const result = await resetPassword(resetEmail);
     setLoading(false);
     if (result.success) {
-      Alert.alert('Success', 'Password reset email sent!');
+      Alert.alert('Sucesso', 'Email de redefinição de senha enviado!');
       setMode('login');
     } else {
-      Alert.alert('Error', result.error || 'Failed to send reset email');
+      Alert.alert('Erro', result.error || 'Falha ao enviar email de redefinição');
     }
   };
 
@@ -87,7 +87,7 @@ const LoginScreen = () => {
               color: Colors[colorScheme ?? 'light'].text,
               borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
             }]}
-            placeholder="Email"
+            placeholder="E-mail"
             placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
             value={email}
             onChangeText={setEmail}
@@ -100,7 +100,7 @@ const LoginScreen = () => {
               color: Colors[colorScheme ?? 'light'].text,
               borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
             }]}
-            placeholder="Password"
+            placeholder="Senha"
             placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
             value={password}
             onChangeText={setPassword}
@@ -109,9 +109,9 @@ const LoginScreen = () => {
           {errorMsg && (
             <Text style={{ color: 'red', textAlign: 'center', marginBottom: 8 }}>{errorMsg}</Text>
           )}
-          <Button title={loading ? 'Logging in...' : 'Login'} onPress={handleLogin} color="#FF7001" disabled={loading} />
+          <Button title={loading ? 'Entrando...' : 'Entrar'} onPress={handleLogin} color="#FF7001" disabled={loading} />
           <Text style={{ textAlign: 'center', marginTop: 10 }}>
-            <Text style={{ color: '#FF7001' }} onPress={() => setMode('signup')}>Sign up</Text> | <Text style={{ color: '#FF7001' }} onPress={() => setMode('reset')}>Forgot password?</Text>
+            <Text style={{ color: '#FF7001' }} onPress={() => setMode('signup')}>Cadastrar</Text> | <Text style={{ color: '#FF7001' }} onPress={() => setMode('reset')}>Esqueceu a senha?</Text>
           </Text>
         </>
       )}
@@ -142,9 +142,9 @@ const LoginScreen = () => {
             onChangeText={setPassword}
             secureTextEntry
           />
-          <Button title={loading ? 'Signing up...' : 'Sign up'} onPress={handleSignup} color="#FF7001" disabled={loading} />
+          <Button title={loading ? 'Cadastrando...' : 'Cadastrar'} onPress={handleSignup} color="#FF7001" disabled={loading} />
           <Text style={{ textAlign: 'center', marginTop: 10 }}>
-            <Text style={{ color: '#FF7001' }} onPress={() => setMode('login')}>Back to login</Text>
+            <Text style={{ color: '#FF7001' }} onPress={() => setMode('login')}>Voltar para login</Text>
           </Text>
         </>
       )}
@@ -156,16 +156,16 @@ const LoginScreen = () => {
               color: Colors[colorScheme ?? 'light'].text,
               borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
             }]}
-            placeholder="Enter your email"
+            placeholder="Digite seu e-mail"
             placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
             value={resetEmail}
             onChangeText={setResetEmail}
             autoCapitalize="none"
             keyboardType="email-address"
           />
-          <Button title={loading ? 'Sending...' : 'Send reset email'} onPress={handleReset} color="#FF7001" disabled={loading} />
+          <Button title={loading ? 'Enviando...' : 'Enviar email de redefinição'} onPress={handleReset} color="#FF7001" disabled={loading} />
           <Text style={{ textAlign: 'center', marginTop: 10 }}>
-            <Text style={{ color: '#FF7001' }} onPress={() => setMode('login')}>Back to login</Text>
+            <Text style={{ color: '#FF7001' }} onPress={() => setMode('login')}>Voltar para login</Text>
           </Text>
         </>
       )}

@@ -22,7 +22,7 @@ const ExpenseInput: React.FC<ExpenseInputProps> = ({ onAddExpense }) => {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: Colors[colorScheme ?? 'light'].text }]}>
-        Add Expense
+        Adicionar Despesa
       </Text>
       <TextInput
         style={[styles.input, { 
@@ -30,7 +30,7 @@ const ExpenseInput: React.FC<ExpenseInputProps> = ({ onAddExpense }) => {
           color: Colors[colorScheme ?? 'light'].text,
           borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
         }]}
-        placeholder="Description"
+        placeholder="Descrição"
         placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
         value={description}
         onChangeText={setDescription}
@@ -41,13 +41,13 @@ const ExpenseInput: React.FC<ExpenseInputProps> = ({ onAddExpense }) => {
           color: Colors[colorScheme ?? 'light'].text,
           borderColor: Colors[colorScheme ?? 'light'].tabIconDefault
         }]}
-        placeholder="Amount"
+        placeholder="Valor"
         placeholderTextColor={Colors[colorScheme ?? 'light'].tabIconDefault}
         value={amount}
         onChangeText={setAmount}
         keyboardType="numeric"
       />
-      <Button title="Add Expense" onPress={handleAddExpense} color="#FF7001" />
+      <Button title="Adicionar Despesa" onPress={handleAddExpense} color="#FF7001" />
     </View>
   );
 };
